@@ -1,16 +1,30 @@
-## Hi there 👋
+# کافه‌یار · Café Yar
 
-<!--
-**ALADDIN3418/ALADDIN3418** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+دموی عملیاتی SaaS مدیریت کافه با پنل فارسی، منوی آنلاین، سبد خرید و ثبت سفارش. داده‌ها در SQLite ذخیره می‌شوند و هر درخواست مدیریتی به کافهٔ کاربر واردشده محدود است.
 
-Here are some ideas to get you started:
+## اجرا
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+Node.js 24+ لازم است.
+
+```bash
+npm install
+npm run dev
+```
+
+پنل در `http://localhost:5173` و API در `http://localhost:3001` اجرا می‌شود. در نخستین بازدید از `/` حساب دموی «کافه دالی» به‌طور خودکار باز می‌شود؛ برای ورود یا ایجاد کافهٔ مستقل به `/login` بروید. منوی عمومی نمونه در `/m/cafe-dali` قابل مشاهده است. حساب نمونه: `demo@cafeyar.ir` / `demo1234`.
+
+```bash
+npm test
+npm run build
+npm start
+```
+
+اجرای production روی پورت `3001` خروجی `dist` را نیز سرو می‌کند. مسیر پایگاه داده با `DATABASE_PATH`، مسیر تصاویر با `UPLOAD_DIR` و پورت API با `PORT` قابل تغییر است. داده‌ها و تصاویر پیش‌فرض در `data/` و `uploads/` ایجاد می‌شوند و در git ثبت نمی‌شوند.
+
+## امکانات و مرزهای نسخه دمو
+
+- ثبت‌نام کافه با آدرس اختصاصی، ورود با رمز هش‌شده و نشست HttpOnly؛ جداسازی داده‌ها با `cafe_id` در تمام مسیرهای مدیریتی.
+- مدیریت دسته‌بندی، محصول، تصویر آپلودی یا URL، گالری، اطلاعات کافه و وضعیت سفارش‌ها.
+- منوی عمومی موبایل‌پسند، جست‌وجو، سبد خرید و ثبت سفارش با محاسبهٔ قیمت در سرور.
+- خروجی دادهٔ تجمیعی و بدون اطلاعات شخصی مشتری در `GET /api/admin/ai/context` برای اتصال یک سرویس AI در آینده؛ در این نسخه مدل هوش مصنوعی متصل نشده است.
+- دیتابیس محلی SQLite برای دموی تک‌سرور؛ برای استقرار SaaS چندسروری، لایهٔ ذخیره‌سازی و فایل‌ها را به PostgreSQL/Supabase و object storage منتقل کنید و پرداخت/اعلان‌ها/محدودسازی نرخ درخواست را اضافه کنید. حساب دمو مشترک است؛ برای داده‌های خصوصی حساب جدید بسازید.
