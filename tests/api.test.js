@@ -9,6 +9,7 @@ import net from 'node:net';
 const projectRoot = path.resolve(import.meta.dirname, '..');
 const delay = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
+/** Find an available local port for the isolated API test server. */
 async function freePort() {
   const server = net.createServer();
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -26,6 +27,7 @@ test('tenant isolation, catalog management, public ordering and status lifecycle
     env: { ...process.env, PORT: String(port), DATABASE_PATH: path.join(temp, 'db.sqlite'), UPLOAD_DIR: path.join(temp, 'uploads') },
     stdio: 'ignore'
   });
+  /** Send a request to the test server and return its response and session cookie. */
   async function request(url, method = 'GET', body, cookie) {
     const response = await fetch(base + url, {
       method,

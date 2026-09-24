@@ -41,6 +41,7 @@ const row = (sql, ...params) => db.prepare(sql).get(...params);
 const rows = (sql, ...params) => db.prepare(sql).all(...params);
 const run = (sql, ...params) => db.prepare(sql).run(...params);
 
+/** Populate the demo cafe with catalog, gallery, and sample orders once. */
 function seedDemo() {
   if (row('SELECT id FROM cafes WHERE slug = ?', 'cafe-dali')) return;
   db.exec('BEGIN');
@@ -96,6 +97,7 @@ app.use((req, res, next) => {
   next();
 });
 
+/** Require a valid, unexpired session and attach its user to the request. */
 function authenticate(req, res, next) {
   const token = (req.get('cookie') || '').split('; ').find(cookie => cookie.startsWith('cy_session='))?.slice(11);
   const hash = token && createHash('sha256').update(token).digest('hex');
@@ -104,11 +106,13 @@ function authenticate(req, res, next) {
   req.user = user;
   next();
 }
+/** Persist a new session and set its HttpOnly cookie on the response. */
 function startSession(res, userId) {
   const token = randomBytes(32).toString('hex');
   run('INSERT INTO sessions (token_hash,user_id,expires_at) VALUES (?,?,?)', createHash('sha256').update(token).digest('hex'), userId, Date.now() + 7 * 86400000);
   res.cookie('cy_session', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 7 * 86400000, path: '/' });
 }
+/** Load the admin dashboard data belonging to one cafe. */
 function cafeData(cafeId) {
   return {
     cafe: row('SELECT * FROM cafes WHERE id = ?', cafeId),
@@ -178,6 +182,7 @@ app.delete('/api/admin/categories/:id', authenticate, (req, res) => {
   res.json({ ok: true });
 });
 
+/** Validate and normalize product fields for the specified cafe. */
 function productInput(body, cafeId) {
   const name = value(body.name, 100);
   const price = Number(body.price);
