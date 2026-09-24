@@ -1,0 +1,72 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  line-height: 0;
+}
+
+.brand-image {
+  display: block;
+  width: 146px;
+  height: auto;
+  object-fit: contain;
+}
+
+.brand-small .brand-image {
+  width: 112px;
+}
+
+.auth-art-top .brand-image {
+  width: 165px;
+}
+
+.auth-mobile-logo .brand-image {
+  width: 150px;
+}
+
+.public-logo,
+.phone-brand {
+  background: url('/assets/cafeyar-logo.png') center / contain no-repeat;
+  flex: none;
+  position: relative;
+}
+
+.public-logo {
+  display: block;
+  width: 116px;
+  height: 58px;
+}
+
+.phone-brand {
+  width: 105px;
+  height: 52px;
+  margin: 0 auto 7px;
+}
+
+.public-logo svg,
+.public-logo span,
+.phone-brand svg,
+.phone-brand span {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.public-footer .brand {
+  display: inline-flex;
+}
+
+.public-error .brand-image {
+  width: 180px;
+}
+
+@media (max-width: 510px) {
+  .public-logo {
+    width: 105px;
+    height: 54px;
+  }
+
+  .public-footer .brand-image {
+    width: 95px;
+  }
+}
